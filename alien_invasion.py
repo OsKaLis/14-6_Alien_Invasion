@@ -11,6 +11,9 @@ from button import Button
 from scoreboard import Scoreboard
 
 def run_game():
+    # Загружаем (pygame.mixer)
+    pygame.mixer.pre_init(44100, -16, 1, 512)
+
     # Инициализирует игру и создает обьект экрана.
     pygame.init()
     ai_settings = Settings()
@@ -45,12 +48,14 @@ def run_game():
     # запускаем фоновую музыку
     gf.sours_fon('sound/fon_01.wav')
 
+    # Звуковой эфект Пули
+    spulya = pygame.mixer.Sound('sound/ship_pula.wav')
 
     # Запуск основной цикла игры.
     while True:
         # Отслеживаем события клавиатуры и мыши
         gf.check_events(ai_settings, screen, stats, sb,
-            play_button, ship, bullets, aliens)
+            play_button, ship, bullets, aliens, spulya)
 
         if stats.game_active:
             # Обновление нажатий клавиш

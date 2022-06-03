@@ -5,6 +5,7 @@ from time import sleep
 from bullet import Bullet
 from alien import Alien
 
+
 def sours_fon(name_file):
     """
     Проигррование фоновой музыки для игры
@@ -22,7 +23,7 @@ def fire_bullet(ai_settings, screen, ship, bullets):
         new_bullet = Bullet(ai_settings, screen, ship)
         bullets.add(new_bullet)
 
-def check_keydown_events(event, ai_settings, screen, ship, bullets):
+def check_keydown_events(event, ai_settings, screen, ship, bullets, spulya):
     """
     Рефгирет на нажатие клавишь.
     """
@@ -37,6 +38,7 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets):
     elif event.key == pygame.K_SPACE:
         # СозданиеНовой пули и включении её в группу bullet
         fire_bullet(ai_settings, screen, ship, bullets)
+        spulya.play()
 
 def check_keyup_events(event, ship):
     """
@@ -50,7 +52,7 @@ def check_keyup_events(event, ship):
         ship.moving_left = False
 
 def check_events(ai_settings, screen, stats, sb,
-    play_button, ship, bullets, aliens):
+    play_button, ship, bullets, aliens, spulya):
     """
     Отслеживаем события клавиатуры и мыши
     """
@@ -58,7 +60,8 @@ def check_events(ai_settings, screen, stats, sb,
         if event.type == pygame.QUIT:
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, ai_settings, screen, ship, bullets)
+            check_keydown_events(event, ai_settings, screen, ship, bullets,
+                spulya)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
         # Проверяем нажатие мышки на область кнопки (Для запуска игры)
