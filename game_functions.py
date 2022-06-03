@@ -5,6 +5,13 @@ from time import sleep
 from bullet import Bullet
 from alien import Alien
 
+def sours_fon(name_file):
+    """
+    Проигррование фоновой музыки для игры
+    """
+    pygame.mixer.music.load(name_file)
+    pygame.mixer.music.play(-1)
+
 
 def fire_bullet(ai_settings, screen, ship, bullets):
     """

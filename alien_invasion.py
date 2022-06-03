@@ -42,6 +42,10 @@ def run_game():
     # Создание экземпляров GameStats и Scoreboard.
     sb = Scoreboard(ai_settings, screen, stats)
 
+    # запускаем фоновую музыку
+    gf.sours_fon('sound/fon_01.wav')
+
+
     # Запуск основной цикла игры.
     while True:
         # Отслеживаем события клавиатуры и мыши
