@@ -1,9 +1,12 @@
 import sys
 import pygame
 from time import sleep
+import time
+from random import randint
 
 from bullet import Bullet
 from alien import Alien
+from bullet_nlo import BulletNLO
 
 
 def sours_fon(name_file):
@@ -98,7 +101,7 @@ def check_play_button(ai_settings, screen, stats, sb, play_button, ship,
             ship.center_ship()
 
 def update_screen(ai_settings, screen,
-        stats, sb, ship, aliens, bullets, play_button):
+        stats, sb, ship, aliens, bullets, play_button, bulletsNLO):
     """
     Обновляет изображения на экране и отображает новый экран.
     """
@@ -106,6 +109,10 @@ def update_screen(ai_settings, screen,
     screen.fill(ai_settings.bg_color)
     # Все пули выводятся позади изображения коробля и прищельцев.
     for bullet in bullets.sprites():
+        bullet.draw_bullet()
+
+    # Выпускаю пули пришельцев
+    for bullet in bulletsNLO.sprites():
         bullet.draw_bullet()
     # рисуем корабль
     ship.blitme()
@@ -279,3 +286,34 @@ def check_high_score(stats, sb):
     if stats.score > stats.high_score:
         stats.high_score = stats.score
         sb.prep_high_score()
+
+def vistrel_nlo(ai_settings, aliens, screen, ship, bulletsNLO):
+    # отсчитываем сколько прошло времени чтоб отоковать пришельцу
+    tekvrem = time.time()
+
+    if int(tekvrem - ai_settings.nachala_time) >= ai_settings.time_puli_nlo:
+        kolaliens = len(aliens)
+        if kolaliens >= 1:
+            rchi = randint(1, kolaliens)
+            #print('nlo-Piu = ' + str(rchi))
+        ai_settings.nachala_time = tekvrem
+        # Создаю пулю ОНЛ
+        i = 0
+        for alien in aliens.copy():
+            if i == rchi:
+                pul_nlo = BulletNLO(ai_settings, screen, alien)
+                bulletsNLO.add(pul_nlo)
+                break
+            i += 1
+
+def update_bulletsNLO(ai_settings, screen, stats, sb, ship, aliens,
+        bulletsNLO):
+    """
+    Обновляет позиции пули и уничтожает старые пули.
+    """
+    bulletsNLO.update()
+    # Удаление пуль, вышедших за край экрана.
+    for bullet in bulletsNLO.copy():
+        if bullet.rect.y >= ai_settings.screen_height:
+            bulletsNLO.remove(bullet)
+    #print(len(bullets))

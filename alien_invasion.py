@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Group
 import time
+from time import sleep
 
 # Свои модули
 from settings import Settings
@@ -28,6 +29,9 @@ def run_game():
     # Создание пули для хранения пуль.
     bullets = Group()
 
+    # Создание пуль пришельцев
+    bulletsNLO = Group()
+
     # Создание пришельца.
     #alien = Alien(ai_settings, screen)
 
@@ -48,7 +52,7 @@ def run_game():
 
     # запускаем фоновую музыку
     gf.sours_fon('sound/fon_01.wav')
-
+    sleep(2.6)
     # Звуковой эфект Пули
     spulya = pygame.mixer.Sound('sound/ship_pula.wav')
 
@@ -60,22 +64,21 @@ def run_game():
 
     # Запуск основной цикла игры.
     while True:
-        # отсчитываем сколько прошло времени чтоб отоковать пришельцу
-        tekvrem = time.time()
-        if int(tekvrem - ai_settings.nachala_time) == ai_settings.time_puli_nlo:
-            ai_settings.nachala_time = tekvrem
-            print('nlo-Piu >>>')
-
         # Отслеживаем события клавиатуры и мыши
         gf.check_events(ai_settings, screen, stats, sb,
             play_button, ship, bullets, aliens, spulya)
 
         if stats.game_active:
+            # отсчитываем сколько прошло времени чтоб отоковать пришельцу
+            gf.vistrel_nlo(ai_settings, aliens, screen, ship, bulletsNLO)
             # Обновление нажатий клавиш
             ship.update()
             # Обновление позиции пуль и уничтожает старые пули
             gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens,
                 bullets)
+            # Обновляем позиции пуль пришельцев
+            gf.update_bulletsNLO(ai_settings, screen, stats, sb, ship, aliens,
+                    bulletsNLO)
             # Обработка колизий удалять сталкнувшихся пуль с пришельцами
             gf.check_bullet_alien_collisions(ai_settings, screen, stats, sb,
                 ship, aliens, bullets, soundnlo)
@@ -85,6 +88,6 @@ def run_game():
 
         # Обновляет изображения на экране и отображает новый экран.
         gf.update_screen(ai_settings, screen,
-            stats, sb, ship, aliens, bullets, play_button)
+            stats, sb, ship, aliens, bullets, play_button, bulletsNLO)
 
 run_game()
