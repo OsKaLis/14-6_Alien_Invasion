@@ -249,21 +249,16 @@ def ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets):
     if stats.ships_left > 0:
         # Уменьшение ships_left.
         stats.ships_left -= 1
-
         # Обновление игровой информации.
         sb.prep_ships()
-
         # Очистка списка пришельцев и пуль.
         aliens.empty()
         bullets.empty()
-
         # Создание нового флота и рзмещение коробля в центре.
         create_fleet(ai_settings, screen, ship, aliens)
         ship.center_ship()
-
         # Пауза.
         sleep(0.7)
-
     else:
         stats.game_active = False
         pygame.mouse.set_visible(True)
@@ -274,7 +269,7 @@ def check_aliens_bottom(ai_settings, stats, screen, sb, ship, aliens, bullets):
     for alien in aliens.sprites():
         if alien.rect.bottom >= screen_rect.bottom:
             # Происходит то же, чо при столкновении с кароблём.
-            ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets)
+            ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets)
             break
 
 def check_high_score(stats, sb):

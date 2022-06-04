@@ -1,5 +1,6 @@
 import pygame
 from pygame.sprite import Group
+import time
 
 # Свои модули
 from settings import Settings
@@ -54,8 +55,17 @@ def run_game():
     # Взрыв пришельца
     soundnlo = pygame.mixer.Sound('sound/nlo_vzriv.wav')
 
+    # Время для отчёта стрельбы пришельцев
+    ai_settings.nachala_time = time.time()
+
     # Запуск основной цикла игры.
     while True:
+        # отсчитываем сколько прошло времени чтоб отоковать пришельцу
+        tekvrem = time.time()
+        if int(tekvrem - ai_settings.nachala_time) == ai_settings.time_puli_nlo:
+            ai_settings.nachala_time = tekvrem
+            print('nlo-Piu >>>')
+
         # Отслеживаем события клавиатуры и мыши
         gf.check_events(ai_settings, screen, stats, sb,
             play_button, ship, bullets, aliens, spulya)

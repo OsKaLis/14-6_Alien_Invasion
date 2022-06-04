@@ -35,6 +35,10 @@ class Settings():
         self.score_scale = 1.5
         self.initialize_dynamic_settings()
 
+        # настройки пуль пришельцев
+        self.nachala_time = 0
+        self.time_puli_nlo = 10
+
     def initialize_dynamic_settings(self):
         """
         Инициализируем настройки, изменяющиеся в ходе игры.
