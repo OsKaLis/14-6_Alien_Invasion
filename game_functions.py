@@ -136,7 +136,8 @@ def update_bullets(ai_settings, screen, stats, sb, ship, aliens,
             bullets.remove(bullet)
     #print(len(bullets))
 
-def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets):
+def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens,
+        bullets, soundnlo):
     """
     Обработка коллизий пуль с пришельцами.
     """
@@ -148,6 +149,7 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, 
             stats.score += ai_settings.alien_points * len(aliens)
         sb.prep_score()
         check_high_score(stats, sb)
+        soundnlo.play()
 
     if len(aliens) == 0:
         # Если весь флот уничтожен, начинается следующий уровень.

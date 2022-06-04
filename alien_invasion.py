@@ -51,6 +51,9 @@ def run_game():
     # Звуковой эфект Пули
     spulya = pygame.mixer.Sound('sound/ship_pula.wav')
 
+    # Взрыв пришельца
+    soundnlo = pygame.mixer.Sound('sound/nlo_vzriv.wav')
+
     # Запуск основной цикла игры.
     while True:
         # Отслеживаем события клавиатуры и мыши
@@ -65,7 +68,7 @@ def run_game():
                 bullets)
             # Обработка колизий удалять сталкнувшихся пуль с пришельцами
             gf.check_bullet_alien_collisions(ai_settings, screen, stats, sb,
-                ship, aliens, bullets)
+                ship, aliens, bullets, soundnlo)
             # Обновление позиции пришельцев
             gf.update_aliens(ai_settings, screen, stats, sb, ship, aliens,
                 bullets)
