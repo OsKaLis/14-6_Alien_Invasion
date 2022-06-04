@@ -81,7 +81,7 @@ def run_game():
                     bulletsNLO)
             # Обработка колизий удалять сталкнувшихся пуль с пришельцами
             gf.check_bullet_alien_collisions(ai_settings, screen, stats, sb,
-                ship, aliens, bullets, soundnlo)
+                ship, aliens, bullets, soundnlo, bulletsNLO)
             # Обновление позиции пришельцев
             gf.update_aliens(ai_settings, screen, stats, sb, ship, aliens,
                 bullets)

@@ -38,9 +38,10 @@ class Settings():
         # настройки пуль пришельцев
         self.nachala_time = 0
         self.time_puli_nlo = 2
-        self.bulletNLO_width = 7
-        self.bulletNLO_height = 7
+        self.bulletNLO_width = 9
+        self.bulletNLO_height = 9
         self.bulletNLO_color = (0, 0, 255)
+        self.kol_strelyuchih = 2
 
     def initialize_dynamic_settings(self):
         """

@@ -144,7 +144,7 @@ def update_bullets(ai_settings, screen, stats, sb, ship, aliens,
     #print(len(bullets))
 
 def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens,
-        bullets, soundnlo):
+        bullets, soundnlo, bulletsNLO):
     """
     Обработка коллизий пуль с пришельцами.
     """
@@ -157,9 +157,14 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens,
         sb.prep_score()
         check_high_score(stats, sb)
         soundnlo.play()
+    # Пришельцы попали по кораблю
+    collisionsNLO = pygame.sprite.spritecollide(ship, bulletsNLO, True)
+    if collisionsNLO:
+        #print('Корабль погиб')
+        ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
+    # Если весь флот уничтожен, начинается следующий уровень.
     if len(aliens) == 0:
-        # Если весь флот уничтожен, начинается следующий уровень.
         bullets.empty()
         ai_settings.increase_speed()
         # Увеличение уровня.
@@ -290,21 +295,23 @@ def check_high_score(stats, sb):
 def vistrel_nlo(ai_settings, aliens, screen, ship, bulletsNLO):
     # отсчитываем сколько прошло времени чтоб отоковать пришельцу
     tekvrem = time.time()
-
     if int(tekvrem - ai_settings.nachala_time) >= ai_settings.time_puli_nlo:
         kolaliens = len(aliens)
-        if kolaliens >= 1:
-            rchi = randint(1, kolaliens)
-            #print('nlo-Piu = ' + str(rchi))
+        if kolaliens > 0:
+            # Создаю нужное количество случайных выстрелов пришельцами
+            for i in range(ai_settings.kol_strelyuchih):
+                #print('piu\n' + str(i))
+                rchi = randint(0, kolaliens)
+                # Создаю пулю ОНЛ
+                i = 0
+                for alien in aliens.copy():
+                    if i == rchi:
+                        pul_nlo = BulletNLO(ai_settings, screen, alien)
+                        bulletsNLO.add(pul_nlo)
+                        break
+                    i += 1
         ai_settings.nachala_time = tekvrem
-        # Создаю пулю ОНЛ
-        i = 0
-        for alien in aliens.copy():
-            if i == rchi:
-                pul_nlo = BulletNLO(ai_settings, screen, alien)
-                bulletsNLO.add(pul_nlo)
-                break
-            i += 1
+
 
 def update_bulletsNLO(ai_settings, screen, stats, sb, ship, aliens,
         bulletsNLO):
