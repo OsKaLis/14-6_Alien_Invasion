@@ -65,13 +65,13 @@ def run_game():
 
     # Создаю группу преград меджу пришельцами и кораблём
     metiorits = Group()
-    gf.risuem_Bloki(ai_settings, screen, ship, metiorits)
+
 
     # Запуск основной цикла игры.
     while True:
         # Отслеживаем события клавиатуры и мыши
         gf.check_events(ai_settings, screen, stats, sb,
-            play_button, ship, bullets, aliens, spulya)
+            play_button, ship, bullets, aliens, spulya, metiorits)
 
         if stats.game_active:
             # отсчитываем сколько прошло времени чтоб отоковать пришельцу
@@ -87,6 +87,12 @@ def run_game():
             # Обработка колизий удалять сталкнувшихся пуль с пришельцами
             gf.check_bullet_alien_collisions(ai_settings, screen, stats, sb,
                 ship, aliens, bullets, soundnlo, bulletsNLO)
+            # Проверка столкновений с блоком и пулей пришельца
+            gf.check_bulletNLO_blok_collisions(ai_settings, screen, stats, sb,
+                ship, aliens, bullets, soundnlo, bulletsNLO, metiorits)
+            # Проверка столкновений пул роробля с блоком
+            gf.check_ship_blok_collisions(ai_settings, screen, stats, sb, ship,
+                aliens, bullets, soundnlo, bulletsNLO, metiorits)
             # Обновление позиции пришельцев
             gf.update_aliens(ai_settings, screen, stats, sb, ship, aliens,
                 bullets)

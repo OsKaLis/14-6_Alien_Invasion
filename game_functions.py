@@ -5,6 +5,8 @@ import time
 from random import randint
 from random import choice
 
+import struct
+
 from bullet import Bullet
 from alien import Alien
 from bullet_nlo import BulletNLO
@@ -57,7 +59,7 @@ def check_keyup_events(event, ship):
         ship.moving_left = False
 
 def check_events(ai_settings, screen, stats, sb,
-    play_button, ship, bullets, aliens, spulya):
+    play_button, ship, bullets, aliens, spulya, metiorits):
     """
     Отслеживаем события клавиатуры и мыши
     """
@@ -73,10 +75,10 @@ def check_events(ai_settings, screen, stats, sb,
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             check_play_button(ai_settings, screen, stats, sb, play_button, ship,
-                aliens, bullets, mouse_x, mouse_y)
+                aliens, bullets, mouse_x, mouse_y, metiorits)
 
 def check_play_button(ai_settings, screen, stats, sb, play_button, ship,
-        aliens, bullets, mouse_x, mouse_y):
+        aliens, bullets, mouse_x, mouse_y, metiorits):
     """ Запускаем новую игру при нажатии кнопри (Играть) """
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not stats.game_active:
@@ -97,6 +99,10 @@ def check_play_button(ai_settings, screen, stats, sb, play_button, ship,
             # Очистка списка пришельцев и пуль
             aliens.empty()
             bullets.empty()
+            metiorits.empty()
+
+            # Создаю новые блоки
+            risuem_Bloki(ai_settings, screen, ship, metiorits)
 
             # Создание нового флота и размещение корабля в центре.
             create_fleet(ai_settings, screen, ship, aliens)
@@ -176,6 +182,35 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens,
         stats.level += 1
         sb.prep_level()
         create_fleet(ai_settings, screen, ship, aliens)
+
+def check_bulletNLO_blok_collisions(ai_settings, screen, stats, sb, ship, aliens,
+        bullets, soundnlo, bulletsNLO, metiorits):
+        """
+        Проверяет столкновение пули пришельца с стенкой
+        """
+        collisions = pygame.sprite.groupcollide(bulletsNLO, metiorits, True, False)
+        if collisions:
+            for bloks in collisions.values():
+                for blok in bloks.copy():
+                    if blok.stoykosty_bloka > 0 :
+                        blok.stoykosty_bloka -= 1
+                    else:
+                        metiorits.remove(blok)
+
+
+def check_ship_blok_collisions(ai_settings, screen, stats, sb, ship, aliens,
+        bullets, soundnlo, bulletsNLO, metiorits):
+        """
+        Проверяет столкновение пули Коробля с стенкой
+        """
+        collisions = pygame.sprite.groupcollide(bullets, metiorits, True, False)
+        if collisions:
+            for bloks in collisions.values():
+                for blok in bloks.copy():
+                    if blok.stoykosty_bloka > 0 :
+                        blok.stoykosty_bloka -= 1
+                    else:
+                        metiorits.remove(blok)
 
 
 def get_number_aliens_x(ai_settings, alien_width):
@@ -271,6 +306,7 @@ def ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets):
         # Очистка списка пришельцев и пуль.
         aliens.empty()
         bullets.empty()
+
         # Создание нового флота и рзмещение коробля в центре.
         create_fleet(ai_settings, screen, ship, aliens)
         ship.center_ship()
@@ -341,8 +377,6 @@ def risuem_Bloki(ai_settings, screen, ship, metiorits):
         metiorit = Blok(ai_settings, screen, ship)
         # Получаю кординаты блока
         metiorit.rect.x = choice(linpox)
-        metiorit.rect.y = ai_settings.screen_height - \
-            ship.rect.height - metiorit.rect.height * 2
         #print(str(metiorit.rect.x) + ' : ' + str(metiorit.rect.y))
         metiorits.add(metiorit)
 

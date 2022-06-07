@@ -16,7 +16,14 @@ class Blok(Sprite):
         # Загрусска изображения пришельца и назначения атрибута rect.
         self.image = pygame.image.load('images/blok.bmp')
         self.rect = self.image.get_rect()
-        
+
+        # стойкость блока
+        self.stoykosty_bloka = 3
+
+        # Вычисляем высату блока
+        self.rect.y = ai_settings.screen_height - \
+            ship.rect.height - self.rect.height * 2
+
     def blitme(self):
         """
         Показываем стену

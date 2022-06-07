@@ -43,9 +43,8 @@ class Settings():
         self.bulletNLO_color = (255, 5, 5)
         self.kol_strelyuchih = 2
 
-        # Стойкость стены
-        self.stoykosty_bloka = 3
-        self.kol_bloka_v_vryd = 6
+        # Блоки
+        self.kol_bloka_v_vryd = 7
 
 
     def initialize_dynamic_settings(self):
