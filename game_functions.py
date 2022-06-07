@@ -3,10 +3,12 @@ import pygame
 from time import sleep
 import time
 from random import randint
+from random import choice
 
 from bullet import Bullet
 from alien import Alien
 from bullet_nlo import BulletNLO
+from blok import Blok
 
 
 def sours_fon(name_file):
@@ -101,7 +103,7 @@ def check_play_button(ai_settings, screen, stats, sb, play_button, ship,
             ship.center_ship()
 
 def update_screen(ai_settings, screen,
-        stats, sb, ship, aliens, bullets, play_button, bulletsNLO):
+        stats, sb, ship, aliens, bullets, play_button, bulletsNLO, metiorits):
     """
     Обновляет изображения на экране и отображает новый экран.
     """
@@ -116,6 +118,9 @@ def update_screen(ai_settings, screen,
         bullet.draw_bullet()
     # рисуем корабль
     ship.blitme()
+
+    # рисуем Метиорит
+    metiorits.draw(screen)
 
     # Рисуем пришельца.
     #alien.blitme()
@@ -324,3 +329,30 @@ def update_bulletsNLO(ai_settings, screen, stats, sb, ship, aliens,
         if bullet.rect.y >= ai_settings.screen_height:
             bulletsNLO.remove(bullet)
     #print(len(bullets))
+
+def risuem_Bloki(ai_settings, screen, ship, metiorits):
+    """
+    Создаю стену между пришельцами т кораблём
+    """
+    blok = Blok(ai_settings, screen, ship)
+    linpox = blok_kor_x(blok.rect.width, ai_settings.screen_width)
+
+    for blok in range(ai_settings.kol_bloka_v_vryd):
+        metiorit = Blok(ai_settings, screen, ship)
+        # Получаю кординаты блока
+        metiorit.rect.x = choice(linpox)
+        metiorit.rect.y = ai_settings.screen_height - \
+            ship.rect.height - metiorit.rect.height * 2
+        #print(str(metiorit.rect.x) + ' : ' + str(metiorit.rect.y))
+        metiorits.add(metiorit)
+
+def blok_kor_x(razmer_blok, screen_width):
+    """
+    Масив кординат блоков по x
+    """
+    kuda_stavity = []
+    nexti = razmer_blok
+    while nexti < screen_width:
+        kuda_stavity.append(nexti)
+        nexti += razmer_blok
+    return kuda_stavity

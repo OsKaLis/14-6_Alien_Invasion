@@ -11,6 +11,7 @@ from alien import Alien
 from game_stats import GameStats
 from button import Button
 from scoreboard import Scoreboard
+from blok import Blok
 
 def run_game():
     # Загружаем (pygame.mixer)
@@ -62,6 +63,10 @@ def run_game():
     # Время для отчёта стрельбы пришельцев
     ai_settings.nachala_time = time.time()
 
+    # Создаю группу преград меджу пришельцами и кораблём
+    metiorits = Group()
+    gf.risuem_Bloki(ai_settings, screen, ship, metiorits)
+
     # Запуск основной цикла игры.
     while True:
         # Отслеживаем события клавиатуры и мыши
@@ -87,7 +92,7 @@ def run_game():
                 bullets)
 
         # Обновляет изображения на экране и отображает новый экран.
-        gf.update_screen(ai_settings, screen,
-            stats, sb, ship, aliens, bullets, play_button, bulletsNLO)
+        gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets,
+            play_button, bulletsNLO, metiorits)
 
 run_game()
